@@ -6,7 +6,7 @@
 name: Josh Mason MBA CISSP
 
 # Short bio or description (displayed in the header)
-description: Cybersecurity Community Member just trying to make the world of cybersecurity less cryptic and more helpful.
+description: Your Daily Cybersecurity News
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
 avatar: https://images.squarespace-cdn.com/content/64f1546b04dbf572078754f4/5cf0b52c-c445-4ada-9151-045a363c7a8a/cyber+news+logo+jpg.jpg?content-type=image%2Fjpeg
@@ -49,6 +49,7 @@ url: https://joshua17sc.github.io/cybersecurity-news
 # and NOT your User repository (http://yourusername.github.io)
 # then add in the baseurl here, like this: "/repository-name"
 baseurl: "/cybersecurity-news"
+theme: jekyll-theme-midnight
 
 #
 # !! You don't need to change any of the configuration flags below !!

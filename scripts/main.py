@@ -200,17 +200,18 @@ def publish_episode(token, title, content, media_key):
         logger.error(f"Error publishing episode: {e}")
         raise
 
-def create_html_description(articles):
-    logger.info("Creating HTML description for the podcast")
+def create_html_description(parsed_articles):
     description = ""
-    for article in articles:
-        header = article.find('h2')
-        link = article.find('a')
-        if header and link:
-            description += f'<h2><a href="{link["href"]}">{header.text.replace("\\", "")}</a></h2>'
-        summary = article.get_text().replace(header.text, '').strip()
-        summary = summary.replace('Read more', '').strip()  # Remove any remaining 'Read more' text
-        description += f'<p>{summary}</p>'
+    for parsed_article in parsed_articles:
+        for element in parsed_article:
+            if element.name == "h2":
+                link = element.find("a")
+                if link:
+                    # Escape quotes in the href attribute only
+                    link["href"] = link["href"].replace('"', "&quot;")  
+                    description += str(element) 
+            elif element.name in ["p", "ul"]:
+                description += str(element)  # Keep the element as is
     return description
 
 # News Fetching (from new_blog_post.txt)

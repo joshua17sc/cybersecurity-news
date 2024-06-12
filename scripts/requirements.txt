@@ -1,0 +1,7 @@
+markdown2
+boto3
+requests
+psutil
+pydub
+beautifulsoup4
+openai

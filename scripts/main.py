@@ -138,8 +138,9 @@ def synthesize_speech(script_text, output_path):
         log_resource_usage()  # Log resource usage after processing
         return compressed_audio_path
     except Exception as e:
-        logger.error(f"Error synthesizing speech: {e}")
-        raise
+        logger.error(f"Error in speech synthesis: {e}")
+        # Return an empty string or None to indicate failure
+        return None
     
 # Podbean Interactions
 def read_podbean_token(file_path):
@@ -394,6 +395,10 @@ def main():
         os.makedirs(FILE_PATH, exist_ok=True)  # Create audio_files directory if it doesn't exist
         compressed_audio_path = synthesize_speech(script_text, output_audio_path)
 
+        # Check if audio file was successfully created
+        if not compressed_audio_path:
+            raise Exception("Speech synthesis failed")  # Raise an exception if no audio file is generated
+        
         # Podbean Upload and Publish
         podbean_token = read_podbean_token()
         filename = os.path.basename(compressed_audio_path)

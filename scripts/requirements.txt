@@ -5,3 +5,4 @@ psutil
 pydub
 beautifulsoup4
 openai
+ffmpeg

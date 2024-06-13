@@ -3,7 +3,7 @@ name: Podcast & Blog Automation
 on:
   schedule:
     - cron: '0 8 * * *'  # Run daily at 8:00 AM UTC (adjust as needed)
-  workflow_dispatch:  # Allow manual triggering of the workflow
+  workflow_dispatch:   # This line enables manual triggering
 
 permissions:
   contents: write  # Allow the workflow to push changes to the repository
@@ -21,7 +21,9 @@ jobs:
           python-version: '3.8'
 
       - name: Install dependencies
-        run: pip install -r scripts/requirements.txt  # Point to the correct location
+        run: |
+          pip install --upgrade pip
+          pip install -r scripts/requirements.txt  # Point to the correct location
 
       - name: Run script
         run: python scripts/main.py
@@ -33,7 +35,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           PODBEAN_TOKEN: ${{ secrets.PODBEAN_TOKEN }}
 
-      - name: Commit changes
+      - name: Commit and push changes
         uses: EndBug/add-and-commit@v9  # Use a community action for a simpler commit
         with:
           message: 'Add new blog post and podcast episode' 

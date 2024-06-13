@@ -372,8 +372,10 @@ def create_markdown_content(summaries, today_date):
 #        logger.error(f"Failed to update GitHub blog post: {e}")
 
 # Main Function
+# Main Function (Corrected)
 def main():
-    compressed_audio_path = None  # Initialize to None outside the try block
+    compressed_audio_path = None
+    output_audio_path = None
     try:
         today_date = datetime.date.today().strftime('%Y-%m-%d')
         day_month_format = datetime.date.today().strftime('%-d %B %Y')
@@ -396,8 +398,7 @@ def main():
         os.makedirs(FILE_PATH, exist_ok=True)  # Create audio_files directory if it doesn't exist
         compressed_audio_path = synthesize_speech(script_text, output_audio_path)
 
-        # Check if audio synthesis was successful
-        if compressed_audio_path is None:
+        if compressed_audio_path is None:  # Check if synthesis failed
             raise Exception("Speech synthesis failed. Exiting script.")
         
         # Podbean Upload and Publish
@@ -416,12 +417,10 @@ def main():
     except Exception as e:
         logger.error(f"An error occurred: {e}")
     finally:
-        # Clean up temporary audio files
-        if compressed_audio_path and os.path.exists(compressed_audio_path):
-            os.remove(compressed_audio_path)
-        if os.path.exists(output_audio_path):
-            os.remove(output_audio_path)
-
+        # Clean up temporary audio files (only if they exist)
+        for file_path in [compressed_audio_path, output_audio_path]:
+            if file_path and os.path.exists(file_path):
+                os.remove(file_path)
 
 if __name__ == "__main__":
     set_logging_level(logging.DEBUG)  # Set logging level to DEBUG

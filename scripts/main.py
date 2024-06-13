@@ -373,6 +373,7 @@ def create_markdown_content(summaries, today_date):
 
 # Main Function
 def main():
+    compressed_audio_path = None  # Initialize to None outside the try block
     try:
         today_date = datetime.date.today().strftime('%Y-%m-%d')
         day_month_format = datetime.date.today().strftime('%-d %B %Y')
@@ -383,14 +384,14 @@ def main():
         articles = fetch_top_articles()
         relevant_articles = filter_relevant_articles(articles)
 
-        # Create markdown content 
+        # Create markdown content
         markdown_content = create_markdown_content(relevant_articles, today_date)
 
         # Parse markdown and create podcast script (from podcast_upload.txt)
         parsed_articles = parse_markdown(markdown_content)
         script_text = create_podcast_script(parsed_articles, today_date)
 
-        # Synthesize speech and get audio file path
+        # Synthesize speech and get audio file path (from podcast_upload.txt)
         output_audio_path = os.path.join(FILE_PATH, f'daily_cybersecurity_news_{today_date}.mp3')
         os.makedirs(FILE_PATH, exist_ok=True)  # Create audio_files directory if it doesn't exist
         compressed_audio_path = synthesize_speech(script_text, output_audio_path)
@@ -409,8 +410,6 @@ def main():
         logger.info(f"Episode published: {episode_data['url']}")
 
         # Write the markdown content to the _posts directory
-        file_name = f"cybersecurity-news-{today_date}.md"
-        file_path = os.path.join("_posts", file_name)
         with open(file_path, "w") as file:
             file.write(markdown_content)
 
@@ -418,11 +417,13 @@ def main():
         logger.error(f"An error occurred: {e}")
     finally:
         # Clean up temporary audio files
-        if os.path.exists(compressed_audio_path):
+        if compressed_audio_path and os.path.exists(compressed_audio_path):
             os.remove(compressed_audio_path)
         if os.path.exists(output_audio_path):
             os.remove(output_audio_path)
 
+
 if __name__ == "__main__":
     set_logging_level(logging.DEBUG)  # Set logging level to DEBUG
     main()
+

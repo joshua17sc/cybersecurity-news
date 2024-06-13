@@ -390,14 +390,14 @@ def main():
         parsed_articles = parse_markdown(markdown_content)
         script_text = create_podcast_script(parsed_articles, today_date)
 
-        # Synthesize speech and get audio file path (from podcast_upload.txt)
+        # Synthesize speech and get audio file path
         output_audio_path = os.path.join(FILE_PATH, f'daily_cybersecurity_news_{today_date}.mp3')
         os.makedirs(FILE_PATH, exist_ok=True)  # Create audio_files directory if it doesn't exist
         compressed_audio_path = synthesize_speech(script_text, output_audio_path)
 
-        # Check if audio file was successfully created
-        if not compressed_audio_path:
-            raise Exception("Speech synthesis failed")  # Raise an exception if no audio file is generated
+        # Check if audio synthesis was successful
+        if compressed_audio_path is None:
+            raise Exception("Speech synthesis failed. Exiting script.")
         
         # Podbean Upload and Publish
         podbean_token = read_podbean_token()
@@ -409,6 +409,8 @@ def main():
         logger.info(f"Episode published: {episode_data['url']}")
 
         # Write the markdown content to the _posts directory
+        file_name = f"cybersecurity-news-{today_date}.md"
+        file_path = os.path.join("_posts", file_name)
         with open(file_path, "w") as file:
             file.write(markdown_content)
 

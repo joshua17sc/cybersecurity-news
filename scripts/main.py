@@ -388,6 +388,7 @@ def main():
 
         # Create markdown content
         markdown_content = create_markdown_content(relevant_articles, today_date)
+        logger.info(f"Markdown file written to: {file_path}")
 
         # Parse markdown and create podcast script (from podcast_upload.txt)
         parsed_articles = parse_markdown(markdown_content)

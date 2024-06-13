@@ -33,10 +33,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           PODBEAN_TOKEN: ${{ secrets.PODBEAN_TOKEN }}
 
-      - name: Commit and push changes
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add _posts/*.md
-          git commit -m "Add new blog post and podcast episode"
-          git push origin main # Push to the main branch (change if needed)
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9  # Use a community action for a simpler commit
+        with:
+          message: 'Add new blog post and podcast episode' 

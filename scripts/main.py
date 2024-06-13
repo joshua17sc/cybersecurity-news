@@ -380,7 +380,7 @@ def main():
         today_date = datetime.date.today().strftime('%Y-%m-%d')
         day_month_format = datetime.date.today().strftime('%-d %B %Y')
         file_name = f"cybersecurity-news-{today_date}.md"
-        file_path = os.path.join("_posts", file_name)
+        file_path = os.path.join("..", "_posts", file_name)
 
         # Fetch and filter articles (from new_blog_post.txt)
         articles = fetch_top_articles()
